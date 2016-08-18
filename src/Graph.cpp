@@ -291,5 +291,66 @@ std::string Graph::dfs(const std::string& name, bool topo)
 std::string Graph::cycle(bool& found)
 {
     std::string ret = "";
+    std::set<vertex*> white;
+    std::set<vertex*> grey;
+    std::set<vertex*> black;
+    std::map<vertex*,vertex*> parentMap;
+    ///Init all vertexes into white
+    for(auto& i : m_V)
+        white.insert(i.second);
+    vertex* curr = *white.begin();
+    vertex* prev = nullptr;
+    grey.insert(curr);
+    white.erase(curr);
+    parentMap[curr] = prev;
+    while(black.size() != m_V.size())
+    {
+        found = false;
+        size_t i = 0;
+        while(i < curr->adj.size() && !found)
+        {
+            vertex* v = curr->adj[i].second;
+            if(white.find(v) != white.end())
+            {
+                prev = curr;
+                curr = v;
+                grey.insert(curr);
+                white.erase(curr);
+                parentMap[curr] = prev;
+                found = true;
+                i = 0;
+            }
+            else if(grey.find(v) != grey.end())
+            {
+                found = true;
+                ret += v->name + " " + curr->name + " ";
+                while(curr != nullptr)
+                {
+                    curr = parentMap.find(curr)->second;
+                    if(curr != nullptr)
+                        ret += curr->name + " ";
+                }
+                std::reverse(ret.begin(),ret.end());
+                ret.erase(ret.begin());
+                return ret;
+            }
+            else
+                i++;
+        }
+        if(!found)
+        {
+            black.insert(curr);
+            grey.erase(curr);
+            prev = nullptr;
+            curr = parentMap.find(curr)->second;
+            if(curr == nullptr && !white.empty())
+            {
+                curr = *white.begin();
+                grey.insert(curr);
+                white.erase(curr);
+                parentMap[curr] = prev;
+            }
+        }
+    }
     return ret;
 }
