@@ -3,26 +3,32 @@
 #include <vector>
 #include <map>
 #include <string>
-struct vertex{
-	using ve = std::pair<int,vertex*>;
-	std::vector<ve> adj;
-	std::string name;
-	bool visited;//Might use set locally for visited nodes
-	int degp;
-	int degm;
-	int value;
-	vertex(const std::string& s)
-	:name(s),visited(false),degp(0),degm(0),value(0)
-	{}
+struct vertex
+{
+    using ve = std::pair<int,vertex*>;
+    std::vector<ve> adj;
+    std::string name;
+    bool visited;//Might use set locally for visited nodes
+    int degp;
+    int degm;
+    int value;
+    vertex(const std::string& s)
+    :name(s),visited(false),degp(0),degm(0),value(0)
+    {}
 };
-
 class Graph
 {
+    private:
+        using vmap = std::map<std::string, vertex*>;
+        vmap m_V;
     public:
         Graph() = default;
+        Graph(const Graph& g);
+        Graph& operator=(const Graph& g);
+        Graph(const Graph&& g) = delete;
+        Graph& operator=(const Graph&& g) = delete;
         ~Graph();
-        using vmap = std::map<std::string, vertex*>;
-		void addvertex(const std::string&);
+		vmap::iterator addvertex(const std::string&);
 		void addedge(const std::string& from, const std::string& to, int cost);
 		void removevertex(const std::string& name);
 		void removeedge(const std::string& from, const std::string& to);
@@ -30,9 +36,10 @@ class Graph
 		std::vector<std::string> neighbours(const std::string& name);
 		std::string bfs(const std::string& name);
 		std::string dfs(const std::string& name, bool topo=false);
-		std::vector<std::string> cycles();
-    private:
-        vmap m_V;
+		std::string cycle(bool& found);
+		size_t size()const{return m_V.size();};
+		std::vector<std::string> getkeys()const;
+        vertex* at(const std::string& name)const;
 };
 
 #endif // GRAPH_H
