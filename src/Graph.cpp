@@ -2,6 +2,94 @@
 #include <algorithm>
 #include <queue>
 #include <stack>
+#include <set>
+vertex* Graph::at(const std::string& name)const
+{
+    auto it = m_V.find(name);
+    if(it != m_V.end())
+    {
+        return it->second;
+    }
+    else throw;
+}
+std::vector<std::string> Graph::getkeys()const
+{
+    std::vector<std::string> ret;
+    ret.resize(size());
+    int ind = 0;
+    for(auto& i : m_V)
+    {
+        ret[ind++] = i.first;
+    }
+    return ret;
+}
+Graph::Graph(const Graph& g)
+{
+    std::vector<std::string> names = g.getkeys();
+    for(size_t i = 0; i < g.size(); i++)
+        addvertex(names[i]);
+
+    for(size_t i = 0; i < m_V.size(); i++)
+    {
+        auto it = m_V.find(names[i]);
+        vertex* tmp = g.at(names[i]);
+        vertex* pIt = it->second;
+        for(auto& j : tmp->adj)
+        {
+            //1.cost
+            //2.vertex* in this graph
+            pIt->adj.push_back(std::make_pair(j.first,
+                                              m_V.find(j.second->name)->second));
+        }
+    }
+}
+/*
+    As long as there are vertexes
+    change name,clean adjacency list.   x
+    After that create new vertexes.     x
+    Then fill adjacency lists.
+    Clean remaining not needed vertexes x
+*/
+Graph& Graph::operator=(const Graph& g)
+{
+    int n = m_V.size() - g.size();
+    ///if there are more vertexes than needed: n > 0
+    ///if it is just the right size: n = 0
+    ///if there are not enough vertexes: n < 0
+    std::vector<std::string> names = getkeys();
+    std::vector<std::string> namesTO = g.getkeys();
+    if(!(n<0))
+    {
+        for(size_t i = 0; i < g.size(); i++)
+        {
+            auto it = m_V.find(names[i]);
+            it->second->name = namesTO[i];
+            it->second->adj.clear();
+        }
+        //Clean remaining not needed vertexes
+        for(int i = g.size(); i < n; i++)
+            removevertex(names[i]);
+    }
+    else
+    {
+        for(size_t i = 0; i < g.size(); i++)
+            addvertex(namesTO[i]);
+    }
+    //Filling adjacency list
+    for(size_t i = 0; i < g.size(); i++)
+    {
+        auto it = m_V.find(namesTO[i]);
+        vertex* pIt = it->second;
+        vertex* tmp = g.at(namesTO[i]);
+        for(auto& j : tmp->adj)
+        {
+            pIt->adj.push_back(std::make_pair(j.first,
+                                              m_V.find(j.second->name)->second));
+        }
+    }
+    return *this;
+}
+
 Graph::~Graph()
 {
     if(!m_V.empty())
@@ -11,16 +99,17 @@ Graph::~Graph()
     }
 }
 
-void Graph::addvertex(const std::string &name)
+Graph::vmap::iterator Graph::addvertex(const std::string& name)
 {
 	auto it=m_V.find(name);
 	if(it==m_V.end())
 	{
 		vertex *v;
-		v= new vertex(name);
+		v = new vertex(name);
 		m_V[name]=v;
-		return;
+		return it;
 	}
+	return m_V.end();
 }
 
 void Graph::addedge(const std::string& from, const std::string& to, int cost)
@@ -152,8 +241,8 @@ std::string Graph::dfs(const std::string& name, bool topo)
     {
         std::stack<vertex*> Stack;
         vertex* curr = it->second;
-        Stack.push(curr);//push stackbe
-        curr->visited = true;//megjeloles
+        Stack.push(curr);
+        curr->visited = true;
         if(!topo)
             ret += curr->name + " ";
 
@@ -196,5 +285,11 @@ std::string Graph::dfs(const std::string& name, bool topo)
         for(auto& i : m_V)
             i.second->visited = false;
     }
+    return ret;
+}
+
+std::string Graph::cycle(bool& found)
+{
+    std::string ret = "";
     return ret;
 }
