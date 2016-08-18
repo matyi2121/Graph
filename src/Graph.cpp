@@ -133,7 +133,6 @@ std::string Graph::bfs(const std::string& name)
 std::string Graph::dfs(const std::string& name, bool topo)
 {
     std::string ret = "";
-    std::string retTopo = "";
     auto it = m_V.find(name);
     if(it != m_V.end())
     {
@@ -141,7 +140,8 @@ std::string Graph::dfs(const std::string& name, bool topo)
         vertex* curr = it->second;
         Stack.push(curr);//push stackbe
         curr->visited = true;//megjeloles
-        ret += curr->name + " ";
+        if(!topo)
+            ret += curr->name + " ";
 
         while(!Stack.empty())
         {
@@ -154,7 +154,8 @@ std::string Graph::dfs(const std::string& name, bool topo)
                     found = true;
                     curr = curr->adj[i].second;
                     curr->visited = true;
-                    ret += curr->name + " ";
+                    if(!topo)
+                        ret += curr->name + " ";
                     Stack.push(curr);
                 }
                 i++;
@@ -164,7 +165,7 @@ std::string Graph::dfs(const std::string& name, bool topo)
                 Stack.pop();
                 if(topo)
                 {
-                    retTopo += curr->name + " ";
+                    ret += curr->name + " ";
                 }
                 if(!Stack.empty())
                 {
@@ -174,13 +175,11 @@ std::string Graph::dfs(const std::string& name, bool topo)
         }
         if(topo)
         {
-            std::reverse(retTopo.begin(),retTopo.end());
-            retTopo.erase(retTopo.begin());
+            std::reverse(ret.begin(),ret.end());
+            ret.erase(ret.begin());
         }
         for(auto& i : m_V)
             i.second->visited = false;
     }
-    if(topo)
-        return retTopo;
     return ret;
 }
