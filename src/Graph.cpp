@@ -44,6 +44,7 @@ void Graph::removevertex(const std::string& name)
     if(it != m_V.end())
     {
         delete it->second;
+        m_V.erase(it);
     }
 }
 
