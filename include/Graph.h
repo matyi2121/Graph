@@ -9,11 +9,9 @@ struct vertex
     std::vector<ve> adj;
     std::string name;
     bool visited;//Might use set locally for visited nodes
-    int degp;
-    int degm;
     int value;
     vertex(const std::string& s)
-    :name(s),visited(false),degp(0),degm(0),value(0)
+    :name(s),visited(false),value(0)
     {}
 };
 class Graph
@@ -21,6 +19,7 @@ class Graph
     private:
         using vmap = std::map<std::string, vertex*>;
         vmap m_V;
+        void filladj(const std::vector<std::string>& names, const Graph& g);
     public:
         Graph() = default;
         Graph(const Graph& g);

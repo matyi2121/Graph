@@ -23,12 +23,28 @@ std::vector<std::string> Graph::getkeys()const
     }
     return ret;
 }
+void Graph::filladj(const std::vector<std::string>& names, const Graph& g)
+{
+    for(size_t i = 0; i < m_V.size(); i++)
+    {
+        auto it = m_V.find(names[i]);
+        vertex* tmp = g.at(names[i]);
+        vertex* pIt = it->second;
+        for(auto& j : tmp->adj)
+        {
+            //1.cost
+            //2.vertex* in this graph
+            pIt->adj.push_back(std::make_pair(j.first,
+                                              m_V.find(j.second->name)->second));
+        }
+    }
+}
 Graph::Graph(const Graph& g)
 {
     std::vector<std::string> names = g.getkeys();
     for(size_t i = 0; i < g.size(); i++)
         addvertex(names[i]);
-
+    //filladj(names,g);
     for(size_t i = 0; i < m_V.size(); i++)
     {
         auto it = m_V.find(names[i]);
@@ -76,6 +92,8 @@ Graph& Graph::operator=(const Graph& g)
             addvertex(namesTO[i]);
     }
     //Filling adjacency list
+    //filladj(namesTO,g);
+
     for(size_t i = 0; i < g.size(); i++)
     {
         auto it = m_V.find(namesTO[i]);
@@ -121,12 +139,10 @@ void Graph::addedge(const std::string& from, const std::string& to, int cost)
         vertex *f = (fromIt->second);
         vertex *t = (toIt->second);
         std::pair<int,vertex*> edge = std::make_pair(cost,t);
-        f->degp++;
-        t->degm++;
         f->adj.push_back(edge);
     }
 }
-
+//seems to not work correctly
 void Graph::removevertex(const std::string& name)
 {
     auto it = m_V.find(name);
