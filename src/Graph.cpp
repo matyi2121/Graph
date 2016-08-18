@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <queue>
 #include <stack>
+#include <set>
 vertex* Graph::at(const std::string& name)const
 {
     auto it = m_V.find(name);
@@ -290,6 +291,5 @@ std::string Graph::dfs(const std::string& name, bool topo)
 std::string Graph::cycle(bool& found)
 {
     std::string ret = "";
-
     return ret;
 }
