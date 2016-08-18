@@ -25,12 +25,17 @@ void Graph::addvertex(const std::string &name)
 
 void Graph::addedge(const std::string& from, const std::string& to, int cost)
 {
-	vertex *f = (m_V.find(from)->second);
-	vertex *t = (m_V.find(to)->second);
-	std::pair<int,vertex*> edge = std::make_pair(cost,t);
-	f->degp++;
-	t->degm++;
-	f->adj.push_back(edge);
+    auto fromIt = m_V.find(from);
+    auto toIt   = m_V.find(to);
+    if(fromIt != m_V.end() && toIt != m_V.end())
+    {
+        vertex *f = (fromIt->second);
+        vertex *t = (toIt->second);
+        std::pair<int,vertex*> edge = std::make_pair(cost,t);
+        f->degp++;
+        t->degm++;
+        f->adj.push_back(edge);
+    }
 }
 
 void Graph::removevertex(const std::string& name)
