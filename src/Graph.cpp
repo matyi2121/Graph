@@ -43,6 +43,20 @@ void Graph::removevertex(const std::string& name)
     auto it = m_V.find(name);
     if(it != m_V.end())
     {
+        for(auto& i : m_V)
+        {
+            if(i.second != it->second)
+            {
+                vertex* v = i.second;
+                for(auto& j : v->adj)
+                {
+                    if(j.second->name == name)
+                    {
+                        removeedge(j.second->name,name);
+                    }
+                }
+            }
+        }
         delete it->second;
         m_V.erase(it);
     }
@@ -176,8 +190,9 @@ std::string Graph::dfs(const std::string& name, bool topo)
         if(topo)
         {
             std::reverse(ret.begin(),ret.end());
-            ret.erase(ret.begin());
+            ret.erase(ret.begin());//remove space at the beginning
         }
+        else ret.erase(ret.end()-1);//remove space at the end
         for(auto& i : m_V)
             i.second->visited = false;
     }

@@ -30,6 +30,7 @@ class Graph
 		std::vector<std::string> neighbours(const std::string& name);
 		std::string bfs(const std::string& name);
 		std::string dfs(const std::string& name, bool topo=false);
+		std::vector<std::string> cycles();
     private:
         vmap m_V;
 };
