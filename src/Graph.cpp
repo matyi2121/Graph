@@ -47,6 +47,23 @@ void Graph::removevertex(const std::string& name)
     }
 }
 
+void Graph::removeedge(const std::string& from, const std::string& to)
+{
+    auto fromIt = m_V.find(from);
+    auto toIt   = m_V.find(to);
+    if(fromIt != m_V.end() && toIt != m_V.end())
+    {
+        vertex* v = fromIt->second;
+        size_t i = 0;
+        while(i < v->adj.size() && !(v->adj[i].second->name == to))
+            i++;
+        if(i < v->adj.size())
+        {
+            v->adj.erase(v->adj.begin()+i);
+        }
+    }
+}
+
 bool Graph::adjacent(const std::string& from, const std::string& to)
 {
     auto fromIt = m_V.find(from);

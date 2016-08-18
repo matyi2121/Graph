@@ -6,9 +6,9 @@
 #include <string>
 struct vertex{
 	using ve = std::pair<int,vertex*>;
-	std::vector<ve> adj; //cost of edge, destination vertex
+	std::vector<ve> adj;
 	std::string name;
-	bool visited;
+	bool visited;//Might use set locally for visited nodes
 	int degp;
 	int degm;
 	int value;
@@ -26,6 +26,7 @@ class Graph
 		void addvertex(const std::string&);
 		void addedge(const std::string& from, const std::string& to, int cost);
 		void removevertex(const std::string& name);
+		void removeedge(const std::string& from, const std::string& to);
 		bool adjacent(const std::string& from, const std::string& to);
 		std::vector<std::string> neighbours(const std::string& name);
 		std::string bfs(const std::string& name);
