@@ -1,7 +1,8 @@
 # Graph
 A graph class with different graph algos.
 
-Currently implemented:
+#Currently implemented:
 -BFS
 -DFS
 -Topological sort
+-Cycle check
