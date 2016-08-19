@@ -44,20 +44,7 @@ Graph::Graph(const Graph& g)
     std::vector<std::string> names = g.getkeys();
     for(size_t i = 0; i < g.size(); i++)
         addvertex(names[i]);
-    //filladj(names,g);
-    for(size_t i = 0; i < m_V.size(); i++)
-    {
-        auto it = m_V.find(names[i]);
-        vertex* tmp = g.at(names[i]);
-        vertex* pIt = it->second;
-        for(auto& j : tmp->adj)
-        {
-            //1.cost
-            //2.vertex* in this graph
-            pIt->adj.push_back(std::make_pair(j.first,
-                                              m_V.find(j.second->name)->second));
-        }
-    }
+    filladj(names,g);
 }
 /*
     As long as there are vertexes
@@ -92,19 +79,7 @@ Graph& Graph::operator=(const Graph& g)
             addvertex(namesTO[i]);
     }
     //Filling adjacency list
-    //filladj(namesTO,g);
-
-    for(size_t i = 0; i < g.size(); i++)
-    {
-        auto it = m_V.find(namesTO[i]);
-        vertex* pIt = it->second;
-        vertex* tmp = g.at(namesTO[i]);
-        for(auto& j : tmp->adj)
-        {
-            pIt->adj.push_back(std::make_pair(j.first,
-                                              m_V.find(j.second->name)->second));
-        }
-    }
+    filladj(namesTO,g);
     return *this;
 }
 
