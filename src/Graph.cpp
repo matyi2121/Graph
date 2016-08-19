@@ -217,7 +217,7 @@ std::string Graph::bfs(const std::string& name)
                 curr = Queue.front();
             }
         }
-
+        //reset the visited var
         for(auto& i : m_V)
             i.second->visited = false;
     }
@@ -278,7 +278,16 @@ std::string Graph::dfs(const std::string& name, bool topo)
     }
     return ret;
 }
-
+/*
+There are 3 sets. White set is used for those vertexes that haven't been visited yet,
+grey is for those which we are currently visiting, and Black is used for those that we already visited.
+Using depth first search we go through one of the starting vertexes child, and move it to the grey set.
+If on this way we find a vertex that has a child in the grey set we found a cycle.
+If a vertex has no more children that haven't been visited yet, it is moved into the black set and if
+possible we go back to the parent. If no parent can be found(nullptr) we pick the first element in the
+white set.(if it has any.)
+If there is no cycle every vertex will be moved to the black set.
+*/
 std::string Graph::cycle(bool& found)
 {
     std::string ret = "";
