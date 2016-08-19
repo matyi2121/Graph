@@ -27,17 +27,17 @@ class Graph
         Graph(const Graph&& g) = delete;
         Graph& operator=(const Graph&& g) = delete;
         ~Graph();
-		vmap::iterator addvertex(const std::string&);
-		void addedge(const std::string& from, const std::string& to, int cost);
-		void removevertex(const std::string& name);
-		void removeedge(const std::string& from, const std::string& to);
-		bool adjacent(const std::string& from, const std::string& to);
-		std::vector<std::string> neighbours(const std::string& name);
-		std::string bfs(const std::string& name);
-		std::string dfs(const std::string& name, bool topo=false);
-		std::string cycle(bool& found);
-		size_t size()const noexcept{return m_V.size();};
-		std::vector<std::string> getkeys()const;
+        vmap::iterator addvertex(const std::string&);
+        void addedge(const std::string& from, const std::string& to, int cost);
+        void removevertex(const std::string& name);
+        void removeedge(const std::string& from, const std::string& to);
+        bool adjacent(const std::string& from, const std::string& to);
+        std::vector<std::string> neighbours(const std::string& name);
+        std::string bfs(const std::string& name);
+        std::string dfs(const std::string& name, bool topo=false);
+        std::string cycle(bool& found);
+        size_t size()const noexcept{return m_V.size();};
+        std::vector<std::string> getkeys()const;
         vertex* at(const std::string& name)const;
 };
 
