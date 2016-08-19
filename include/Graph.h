@@ -36,7 +36,7 @@ class Graph
 		std::string bfs(const std::string& name);
 		std::string dfs(const std::string& name, bool topo=false);
 		std::string cycle(bool& found);
-		size_t size()const{return m_V.size();};
+		size_t size()const noexcept{return m_V.size();};
 		std::vector<std::string> getkeys()const;
         vertex* at(const std::string& name)const;
 };
