@@ -117,7 +117,7 @@ void Graph::addedge(const std::string& from, const std::string& to, int cost)
         f->adj.push_back(edge);
     }
 }
-//Currently fixed(Use removeedge in later versions?)
+
 void Graph::removevertex(const std::string& name)
 {
     auto it = m_V.find(name);
@@ -141,7 +141,7 @@ void Graph::removevertex(const std::string& name)
         m_V.erase(it);
     }
 }
-//works correctly
+
 void Graph::removeedge(const std::string& from, const std::string& to)
 {
     auto fromIt = m_V.find(from);
@@ -213,9 +213,7 @@ std::string Graph::bfs(const std::string& name)
             }
             Queue.pop();
             if(!Queue.empty())
-            {
                 curr = Queue.front();
-            }
         }
         //reset the visited var
         for(auto& i : m_V)
@@ -258,13 +256,9 @@ std::string Graph::dfs(const std::string& name, bool topo)
             {
                 Stack.pop();
                 if(topo)
-                {
                     ret += curr->name + " ";
-                }
                 if(!Stack.empty())
-                {
                     curr = Stack.top();
-                }
             }
         }
         if(topo)
