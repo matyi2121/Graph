@@ -142,7 +142,7 @@ void Graph::addedge(const std::string& from, const std::string& to, int cost)
         f->adj.push_back(edge);
     }
 }
-//seems to not work correctly
+//Currently fixed(Use removeedge in later versions?)
 void Graph::removevertex(const std::string& name)
 {
     auto it = m_V.find(name);
@@ -157,7 +157,7 @@ void Graph::removevertex(const std::string& name)
                 {
                     if(j.second->name == name)
                     {
-                        removeedge(j.second->name,name);
+                        v->adj.erase(std::find(v->adj.begin(),v->adj.end(), j));
                     }
                 }
             }
@@ -166,7 +166,7 @@ void Graph::removevertex(const std::string& name)
         m_V.erase(it);
     }
 }
-
+//works correctly
 void Graph::removeedge(const std::string& from, const std::string& to)
 {
     auto fromIt = m_V.find(from);
