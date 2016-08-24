@@ -149,12 +149,12 @@ void Graph::removeedge(const std::string& from, const std::string& to)
     if(fromIt != m_V.end() && toIt != m_V.end())
     {
         vertex* v = fromIt->second;
-        size_t i = 0;
-        while(i < v->adj.size() && !(v->adj[i].second->name == to))
-            i++;
-        if(i < v->adj.size())
+        for(auto& j : v->adj)
         {
-            v->adj.erase(v->adj.begin()+i);
+            if(j.second->name == toIt->second->name)
+            {
+                v->adj.erase(std::find(v->adj.begin(),v->adj.end(),j));
+            }
         }
     }
 }
